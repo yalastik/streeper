@@ -1,0 +1,127 @@
+<!-- channel.html-->
+{% extends "base.html" %}
+{% block title %}Channel Info{% endblock %}
+{% block body %}
+
+<!-- Page Content -->
+<div class="container" align = "center" style = "margin-top: 50px; margin-bottom: 50px;">
+    {% with alerts = get_flashed_messages() %}
+        {% if alerts %}
+            {% for alert in alerts %}
+                {% if "Success" in alert %}
+                    <div class="alert alert-success">
+                      {{ alert }}
+                    </div>
+                {% else %}
+                    <div class="alert alert-danger">
+                      {{ alert }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <h2>Channel info</h2>
+    <div class="card ">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a style = "color: #54C571;" class="nav-link active" id="channel-tab" data-toggle="tab" href="#channel" role="tab" aria-controls="channel" aria-selected="true">Channel</a>
+                </li>
+                <li class="nav-item">
+                    <a style = "color: #54C571;" class="nav-link" id="advertise-tab" data-toggle="tab" href="#advertise" role="tab" aria-controls="advertise" aria-selected="false">Advertise here</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body">
+            <div class="tab-content" id="myTabContent">
+                <div align = "left" class="tab-pane fade show active" id="channel" role="tabpanel" aria-labelledby="channel-tab">
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <th style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;" rowspan="5">
+                                    {% if chan.image == None %}
+                                        <img src="../static/images/rsz_1no_photo.jpg" class="figure-img img-fluid img-thumbnail">
+                                    <p>Default photo. Upload yours <i class="icon-image"></i></p>
+                                    {% else %}
+                                        <img src="../static/images/channel_icons/{{chan.link}}.jpg" class = "figure-img img-fluid img-thumbnail">
+                                        <p>Channel photo <i class="icon-image"></i></p>
+                                    {% endif %}
+                                </th>
+                                <td style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;"><strong>Channel name </strong><i class="icon-profile"></i></td>
+                                <td style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;"><a style="color:#54C571" href="https://t.me/{{ chan.link[1:] }}">{{ chan.name }}</td>
+                            </tr>
+                            <tr>
+                                <td style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;"><strong>Description </strong><i class="icon-file-text"></i></td>
+                                <td style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;">{{ chan.description }}</td>
+                            </tr>
+                            <tr>
+                                <td style = "white-space: nowrap; width: 1%;"><strong>Subscribers </strong><i class="icon-users"></i></td>
+                                <td style = "white-space: nowrap; width: 1%;">{{ chan.subscribers }}</td>
+                            </tr>
+                            <tr>
+                                <td style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;"><strong>Category </strong><i class="icon-stack"></i></td>
+                                <td style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;">{{ chan.category }}</td>
+                            </tr>
+                            <tr>
+                                <td style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;"><strong>Price per post </strong><i class="icon-coin-dollar"></i></td>
+                                <td style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;">{{ chan.price }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="tab-pane fade" id="advertise" role="tabpanel" aria-labelledby="advertise-tab">
+                    {% if current_user.type=="Brand/Agency" %}
+                    <div class="alert alert-danger"> To advertise here sign in as a "creator/influencer". </div>
+                    {% elif current_user.email_confirmed==0 %}
+                        <div class="alert alert-warning">
+                          <strong>Please, </strong>confirm your email to continue.
+                        </div>
+                    {% else%}
+                        <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+                            <form align = "left" method="POST" action="/channel/{{ chan.link[1:] }}">
+                                {{ form.hidden_tag() }}
+                                {{ wtf.form_field(form.link) }}
+                                {{ wtf.form_field(form.content) }}
+                                {{ wtf.form_field(form.comment) }}
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-style">Send request</button>
+                                </div>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Modal window for advertising option-->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Advertise</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+          {% if current_user.email_confirmed==0 %}
+          <div class="alert alert-warning">
+              <strong>Please, </strong>confirm your email to continue
+          </div>
+          {% else %}
+              <p>hello</p>
+          {% endif %}
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

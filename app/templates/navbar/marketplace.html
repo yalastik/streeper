@@ -1,0 +1,242 @@
+<!-- marketplace.html-->
+{% extends "base.html" %}
+{% block title %}Marketplace{% endblock %}
+{% block body %}
+    <!-- Main part -->
+    <!-- Page Content -->
+    <div class="container" align = "center" style = "margin-top: 50px; margin-bottom: 50px;">
+
+    {% with alerts = get_flashed_messages() %}
+        {% if alerts %}
+            {% for alert in alerts %}
+                {% if "Great" in alert %}
+                    <div class="alert alert-success">
+                      {{ alert }}
+                    </div>
+                {% elif "Success" in alert %}
+                    <div class="alert alert-success">
+                      {{ alert }}
+                    </div>
+                {% else %}
+                    <div class="alert alert-danger">
+                      {{ alert }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+      <h2>Marketplace</h2>
+      <p>Here you can find a database of channels</p>
+
+<div>
+        <div>
+<form method="POST" action="/marketplace">
+<div class="">
+  <div class="form-group">
+      <label for="sel1">Choose category:</label>
+    <select class="form-control col-md-4" name="sel" id="sel1">
+        {% if curr_cat=='All' %}
+            <option selected>All</option>
+        {% else %}
+            <option>All</option>
+        {% endif %}
+
+            {% if curr_cat=='Cars' %}
+            <option selected>Cars</option>
+        {% else %}
+            <option>Cars</option>
+        {% endif %}
+
+            {% if curr_cat=='Business' %}
+            <option selected>Business</option>
+        {% else %}
+            <option>Business</option>
+        {% endif %}
+
+                {% if curr_cat=='Medicine and health' %}
+            <option selected>Medicine and health</option>
+        {% else %}
+            <option>Medicine and health</option>
+        {% endif %}
+
+                    {% if curr_cat=='Marketing' %}
+            <option selected>Marketing</option>
+        {% else %}
+            <option>Marketing</option>
+        {% endif %}
+
+
+                        {% if curr_cat=='Work' %}
+            <option selected>Work</option>
+        {% else %}
+            <option>Work</option>
+        {% endif %}
+
+
+                            {% if curr_cat=='Travelling' %}
+            <option selected>Travelling</option>
+        {% else %}
+            <option>Travelling</option>
+        {% endif %}
+
+                                {% if curr_cat=='For women' %}
+            <option selected>For women</option>
+        {% else %}
+            <option>For women</option>
+        {% endif %}
+
+                                    {% if curr_cat=='Sport' %}
+            <option selected>Sport</option>
+        {% else %}
+            <option>Sport</option>
+        {% endif %}
+
+                                        {% if curr_cat=='Culture' %}
+            <option selected>Culture</option>
+        {% else %}
+            <option>Culture</option>
+        {% endif %}
+
+                                            {% if curr_cat=='Education' %}
+            <option selected>Education</option>
+        {% else %}
+            <option>Education</option>
+        {% endif %}
+
+        {% if curr_cat=='Products and services' %}
+            <option selected>Products and services</option>
+        {% else %}
+            <option>Products and services</option>
+        {% endif %}
+
+
+        {% if curr_cat=='18+' %}
+            <option selected>18+</option>
+        {% else %}
+            <option>18+</option>
+        {% endif %}
+
+
+            {% if curr_cat=='Design and decor' %}
+            <option selected>Design and decor</option>
+        {% else %}
+            <option>Design and decor</option>
+        {% endif %}
+
+                {% if curr_cat=='Games' %}
+            <option selected>Games</option>
+        {% else %}
+            <option>Games</option>
+        {% endif %}
+
+                    {% if curr_cat=='Entertainment' %}
+            <option selected>Entertainment</option>
+        {% else %}
+            <option>Entertainment</option>
+        {% endif %}
+
+                        {% if curr_cat=='Science and technology' %}
+            <option selected>Science and technology</option>
+        {% else %}
+            <option>Science and technology</option>
+        {% endif %}
+
+                            {% if curr_cat=='Foreign languages' %}
+            <option selected>Foreign languages</option>
+        {% else %}
+            <option>Foreign languages</option>
+        {% endif %}
+
+
+                                {% if curr_cat=='Motivation and self-education' %}
+            <option selected>Motivation and self-education</option>
+        {% else %}
+            <option>Motivation and self-education</option>
+        {% endif %}
+
+
+                                        {% if curr_cat=='Music' %}
+            <option selected>Music</option>
+        {% else %}
+            <option>Music</option>
+        {% endif %}
+
+                                            {% if curr_cat=='Cinematography' %}
+            <option selected>Cinematography</option>
+        {% else %}
+            <option>Cinematography</option>
+        {% endif %}
+
+                                            {% if curr_cat=='Top' %}
+            <option selected>Top</option>
+        {% else %}
+            <option>Top</option>
+        {% endif %}
+
+    </select>
+  </div>
+</div>
+<div class="">
+    <div class="form-group">
+        Filter by price: <b>$10&nbsp;&nbsp;&nbsp;</b> <input name="pf" id="ex2" type="text" class="span2" value="" data-slider-min="10" data-slider-max="10000" data-slider-step="5" data-slider-value="[{{ curr_price[0] }},{{ curr_price[1] }}]"/> <b>&nbsp;&nbsp;&nbsp;$10000</b>
+    </div>
+</div>
+
+<div class="">
+    <div class="form-group col-xs-8">
+        Filter by subscribers: <b>0&nbsp;&nbsp;&nbsp;</b> <input name="sf" id="ex3" type="text" class="span2" value="" data-slider-min="0" data-slider-max="300000" data-slider-step="1" data-slider-value="[{{ curr_subs[0] }},{{ curr_subs[1] }}]"/> <b>&nbsp;&nbsp;&nbsp;300k</b>
+    </div>
+</div>
+
+<div class="">
+    <div class="form-group col-xs-8">
+        <button type="submit" value="upvote" class="btn btn-style">Update</button>
+    </div>
+</div>
+</form>
+
+
+</div>
+
+            <table class="table table-responsive table-striped table-bordered" id="example" cellspacing="0">
+            <thead style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;">
+              <tr>
+                <th style = "word-wrap: break-word;min-width: 160px;max-width: 600px; width: 1%;">Channel name <i class = "icon-profile"></i></th>
+                <th style = "word-wrap: break-word;min-width: 160px;max-width: 600px; width: 1%;">Subscribers <i class="icon-users"></i></th>
+                <th style = "word-wrap: break-word;min-width: 160px;max-width: 600px; width: 1%;">Price <i class="icon-coin-dollar"></i></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in channels %}
+                  <tr>
+                      <td style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;"><a style = "color: #54C571;" href="/channel/{{ row.link[1:] }}">{{ row.name }}</a></td>
+                      <td style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;">{{ row.subscribers }}</td>
+                      <td style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;">{{ row.price }}</td>
+                  </tr>
+              {% endfor %}
+            </tbody>
+            </table>
+    </div>
+{% endblock %}
+
+{% block scriptBlock %}
+
+
+  <script>
+      $(document).ready(function() {
+        $('#example').DataTable();
+
+        var slider1 = new Slider('#ex2', {
+            formatter: function(value) {
+                return 'Current value: ' + value;
+            }
+        });
+        var slider2 = new Slider('#ex3', {
+            formatter: function(value) {
+                return 'Current value: ' + value;
+            }
+        });
+      } );
+  </script>
+{% endblock %}

@@ -1,0 +1,149 @@
+/* GLOBAL STYLES
+-------------------------------------------------- */
+/* Remove padding below the footer */
+
+body {
+  padding-top: 3rem;
+  padding-bottom: 0rem;
+}
+
+
+.carousel-item {
+  height: 65vh;
+  min-height: 300px;
+  background: no-repeat center center scroll;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+/* class for navbar's background color */
+.bg-company {
+  background-color:#348017;
+  color: white;
+}
+
+.header-style{
+  max-width: 500px;
+  margin: auto;
+  padding-top: 20px;
+}
+
+/* class for button's background color */
+.btn-style {
+  color: white;
+  background-color: #621780;
+  border-color: #868e96;
+}
+
+.btn-style:hover {
+  color: white;
+  background-color: #4CC552;
+  border-color: #868e96;
+}
+
+/*class for forms submit button*/
+.btn_form {
+    color: #621780;
+}
+
+.btn_form:hover {
+    color: #621780;
+    border-color: #621780;
+}
+
+/*style for lists elements*/
+.list-body {
+  padding-left: 10%;
+  padding-top: 5%;
+  padding-bottom: 5%;
+}
+
+/*////////////////*/
+
+/*media queries for text size in carousel slides*/
+@media (min-width: 0px) and (max-width:375px) {
+  h3 {font-size:1rem;}
+  p {font-size:0.75rem;}
+}
+
+@media (min-width: 375px) {
+  h3 {font-size: 1rem;} /*1rem = 16px*/
+}
+
+/* Small devices (landscape phones, 544px and up) */
+@media (min-width: 544px) {
+  h3 {  font-size: 1.5rem;  }
+  /*1rem = 16px*/
+}
+
+/* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
+@media (min-width: 768px) {  
+  h3 {font-size:2rem;} /*1rem = 16px*/
+}
+ 
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) { 
+  h3 {font-size:2.5rem;} /*1rem = 16px*/
+}
+ 
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {  
+  h3 {font-size:3rem;} /*1rem = 16px*/    
+}
+ 
+/*
+::::::::::::::::::::::::::::::::::::::::::::::::::::
+Custom media queries
+*/
+ 
+
+/* MARKETING CONTENT
+-------------------------------------------------- */
+
+/* Center align the text within the three columns below the carousel */
+.marketing .col-lg-4 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.marketing h2 {
+  font-weight: 400;
+}
+.marketing .col-lg-4 p {
+  margin-right: .75rem;
+  margin-left: .75rem;
+}
+
+/*footer styles*/
+.copyright {
+  margin-top: 30px;
+  padding-top: 10px;
+  color: white;
+  font-weight: lighter;
+}
+
+.copyright a {
+ color: white;
+}
+
+/*style for horizontal border lines*/
+.featurette-divider {
+  margin:2rem 0; /* Space out the Bootstrap <hr> more */
+}
+
+.upperleft {
+  display: block;
+  text-align: left;
+  vertical-align: top;
+}
+.middlecenter {
+  display: block;
+  text-align: center;
+  vertical-align: middle;
+}
+.lowercenter {
+  display: block;
+  text-align: center;
+  vertical-align: bottom;
+}

@@ -1,0 +1,251 @@
+<!-- index.html-->
+{% extends "base.html" %}
+{% block title %}Account settings{% endblock %}
+{% block body %}
+<div class="container" align = "center" style = "margin-top: 50px; margin-bottom: 50px;">
+    <h2>Edit Profile</h2>
+	{% with alerts = get_flashed_messages() %}
+        {% if alerts %}
+            {% for alert in alerts %}
+                {% if "Success" in alert or "Great" or "sent!" in alert%}
+                    <div class="alert alert-success">
+                      {{ alert }}
+                    </div>
+                {% else %}
+                    <div class="alert alert-danger">
+                      {{ alert }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+
+    {% if current_user.email_confirmed == 0 %}
+        <div class="alert alert-warning">
+            <strong>Please</strong>, confirm your email!
+        </div>
+    {% endif %}
+
+    <table class="table table-responsive">
+        <tbody>
+            <tr>
+                <th>
+                    <div class = "upperleft" style = "white-space: nowrap; width: 1%;"><i class="icon-user"></i>  Name</div>
+                    <div class="upperleft"><a href="#" data-toggle="modal" data-target="#ChangeUsername" style="white-space: nowrap; width: 1%; color: #54C571;"><i style="color: #54C571;" class="icon-quill"></i> edit</a></div>
+                </th>
+                <td style = "white-space: nowrap; width: 1%;">{{ current_user.name }}</td>
+            </tr>
+            <tr>
+                <th>
+                    <div class = "upperleft" style = "white-space: nowrap; width: 1%;"><i class="icon-envelop"></i>  Email</div>
+                    <div class="upperleft"><a href="#" data-toggle="modal" data-target="#ChangeEmail" style="color: #54C571;"><i style="color: #54C571;" class="icon-quill"></i> change mail</a></div>
+                </th>
+                <td>{{ current_user.email }}</td>
+            </tr>
+            <tr>
+                <th><div class = "upperleft" style = "white-space: nowrap; width: 1%;"><i class="icon-pencil2"></i>  Account type</div></th>
+                <td>{{ current_user.type }}</td>
+            </tr>
+            <tr>
+                <th>
+                    <div class = "upperleft" style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;"><i class="icon-coin-dollar"></i>  Current balance, USD</div>
+                    {% if current_user.type == "Brand/Agency" %}
+                        <div class="upperleft"><a data-toggle="modal" data-target="#Withdrawal" href="#" style="white-space: nowrap; width: 1%; color: #54C571;"><i style="color: #54C571;" class="icon-box-remove"></i>  withdrawal</a></div>
+                    {% else %}
+                        <div class="upperleft"><a data-toggle="modal" data-target="#AddFunds" href="#" style="white-space: nowrap; width: 1%; color: #54C571;"><i style="color: #54C571;" class="icon-box-add"></i>  deposit</a></div>
+                        <div class="upperleft"><a data-toggle="modal" data-target="#Withdrawal" href="#" style="white-space: nowrap; width: 1%; color: #54C571;"><i style="color: #54C571;" class="icon-box-remove"></i>  withdrawal</a></div>
+                    {% endif %}
+                </th>
+                <td>{{ current_user.current_balance }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div align="left">
+        <button type="button" class="btn btn-style" data-toggle="modal" data-target="#ChangePassword">Change password</button>
+    </div>
+
+    {% if current_user.type == "Brand/Agency" %}
+        {% if current_user.channels.count() != 0 %}
+            <hr>
+            <table class="table table-responsive table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;">My channels, №</th>
+                        <th style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;">Channel name <i class = "icon-profile"></i></th>
+                        <th style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;">Confirmed <i class="icon-checkmark"></i></th>
+                        <th style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;">Secret key <i class = "icon-key"></i></th>
+                        <th style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;">Action <i class = "icon-hammer2"></i></th>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for row in channels %}
+                      <tr>
+                          <td style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;">{{ loop.index }}</td>
+                          <td style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;"><a style = "color: #54C571;" href="/channel/{{ row.link[1:] }}">{{ row.name }}</a></td>
+                          {% if row.confirmed==0 %}
+                              <td style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%; color:red;" ><strong>No</strong> <a href="/confirm_channel?secret={{ row.secret }}"><button class="btn btn-warning">Confirm</button></a></td>
+                              <td><b>{{ row.secret }}</b></td>
+                              <td><a href="/delete_channel?secret={{ row.secret }}"><button class="btn btn-danger">Delete</button></a></td>
+                          {% else %}
+                              <td style = "color: green;"><strong>Yes</strong></td>
+                              <td></td>
+                              <td><a href="/delete_channel?secret={{ row.secret }}"><button class="btn btn-danger">Delete</button></a></td>
+                          {% endif %}
+                      </tr>
+                  {% endfor %}
+                </tbody>
+            </table>
+        {%endif%}
+    {%endif%}
+</div>
+
+    <!-- Modal window of edit username-->
+    <div id="ChangeUsername" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Edit Name</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+              <form align = "left" method="POST" action="/settings">
+                  {{ change_username_form.hidden_tag() }}
+                  {{ wtf.form_field(change_username_form.name, value=current_user.name) }}
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-style">Apply</button>
+                  </div>
+              </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Modal window of changing email-->
+    <div id="ChangeEmail" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Change email</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+              <form align = "left" method="POST" action="/settings">
+                  {{ change_email_form.hidden_tag() }}
+                  {{ wtf.form_field(change_email_form.current_password) }}
+                  {{ wtf.form_field(change_email_form.new_email) }}
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-style">Apply</button>
+                  </div>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal window of adding funds-->
+    <div id="AddFunds" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Add funds</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+              <form class="form-signin" align = "left" method="POST" action="/settings">
+                  {{ add_funds_form.hidden_tag() }}
+                  {{ wtf.form_field(add_funds_form.amount) }}
+                  <div class="form-group">
+                    <script
+                        src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                        data-key="pk_test_rW2nCw0ukmmWD7KWQwIzWOlW"
+                        data-amount="{{ add_funds_form.amount.data }}"
+                        data-name="Demo Site"
+                        data-description="Example charge"
+                        data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                        data-locale="auto">
+                    </script>
+                  </div>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal window of withdrawal-->
+    <div id="Withdrawal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Withdrawal</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+              <form class="form-signin" align = "left" method="POST" action="/settings">
+                  {{ withdrawal_form.hidden_tag() }}
+                  {{ wtf.form_field(withdrawal_form.card) }}
+                  {{ wtf.form_field(withdrawal_form.amount) }}
+                  <div class="form-group">
+                     <button type="submit" class="btn btn-style">Request funds</button>
+                  </div>
+                  {% if w.count() != 0%}
+                    <table class="table table-responsive table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;">My withdrawals, №</th>
+                                <th style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;">Card <i class = "icon-credit-card"></i></th>
+                                <th style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;">Date <i class="icon-calendar"></i></th>
+                                <th style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;">Amount <i class = "icon-stack"></i></th>
+                                <th style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;">Status <i class = "icon-checkmark"></i></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {% for row in w %}
+                              <tr>
+                                  <td style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;">{{ loop.index }}</td>
+                                  <td style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;">{{ row.card }}</td>
+                                  <td style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;" >{{ row.date }}</td>
+                                  <td style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;" >{{ row.amount }}</td>
+                                  <td style = "word-wrap: break-word;min-width: 160px;max-width: 160px; width: 1%;" >{{ row.status }}</td>
+                              </tr>
+                          {% endfor %}
+                        </tbody>
+                    </table>
+                  {% endif %}
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Modal window of changing password-->
+    <div id="ChangePassword" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Change password</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+              <form align = "left" method="POST" action="/settings">
+                  {{ change_password_form.hidden_tag() }}
+                  {{ wtf.form_field(change_password_form.current_password) }}
+                  {{ wtf.form_field(change_password_form.new_password) }}
+                  {{ wtf.form_field(change_password_form.new_password_confirm) }}
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-style">Apply</button>
+                  </div>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}

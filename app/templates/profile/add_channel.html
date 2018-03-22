@@ -1,0 +1,52 @@
+<!-- index.html-->
+{% extends "base.html" %}
+{% block title %}Add channel{% endblock %}
+{% block body %}
+<!-- Page Content -->
+<div class="container" align = "center" style = "margin-top: 50px; margin-bottom: 50px;">
+  <div class="panel-header">
+      <h2 class="text-center">
+          Add your channel
+      </h2>
+  </div>
+
+{% with alerts = get_flashed_messages() %}
+    {% if alerts %}
+        {% for alert in alerts %}
+            {% if "Great" in alert %}
+                <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+                    <div class="alert alert-danger">
+                      {{ alert }}
+                    </div>
+                </div>
+            {% elif "Success in alert "%}
+                 <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+                    <div class="alert alert-danger">
+                      {{ alert }}
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+                    <div class="alert alert-danger">
+                      {{ alert }}
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+  <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+      <form align = "left" class="form-add_marketplace" method="POST" action="/add_channel">
+          {{ form.hidden_tag() }}
+          {{ wtf.form_field(form.link) }}
+          {{ wtf.form_field(form.category) }}
+          {{ wtf.form_field(form.description) }}
+          {{ wtf.form_field(form.price) }}
+          <div class="form-group" style="margin-top: 20px;">
+             <button type="submit" class="btn btn-style">Add Channel</button>
+          </div>
+      </form>
+  </div>
+</div>
+{% endblock %}

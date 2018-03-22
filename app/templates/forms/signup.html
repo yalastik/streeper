@@ -1,0 +1,38 @@
+<!-- signup.html-->
+{% extends "base.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block title %}Sign up{% endblock %}
+
+{% block body %}
+    <div class="container" align = "center" style = "margin-top: 50px; margin-bottom: 50px;">
+        <h2> Sign Up or <a href="/login" style = "color: #54C571">Login</a></h2>
+        {% with alerts = get_flashed_messages() %}
+            {% if alerts %}
+                {% for alert in alerts %}
+                    <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+                        <div class="alert alert-danger">
+                          {{ alert }}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+            <form align = "left" method="POST" action="/signup">
+              {{ form.hidden_tag() }}
+              {#{{ wtf.quick_form(form) }}#}
+              {{ wtf.form_field(form.name) }}
+              {{ wtf.form_field(form.email) }}
+              {{ wtf.form_field(form.password) }}
+              {{ wtf.form_field(form.confirm) }}
+              {{ wtf.form_field(form.type) }}
+              {{ wtf.form_field(form.tos) }}
+              <div class="form-group">
+                 <button type="submit" class="btn btn-style">Sign Up</button>
+              </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

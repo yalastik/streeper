@@ -1,0 +1,38 @@
+body {
+    background: url(../images/404.jpg) no-repeat center center fixed;
+    background-size: cover;
+}
+
+.error-template {
+    color: white;
+    padding: 40px 15px;
+    text-align: center;
+}
+
+.error-actions {
+    margin-top:15px;
+    margin-bottom:15px;
+}
+
+.error-actions .btn { margin-right:10px; }
+
+.btn_style {
+    padding: 0.5rem 1rem;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    border-radius: 0.3rem;
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
+    color: #621780;
+}
+
+.btn_style:hover {
+    color: #621780;
+    border-color: #621780;
+}
+
+
+.colorful
+{
+    margin-bottom: auto;
+}

@@ -1,0 +1,47 @@
+<!-- contact.html-->
+{% extends "base.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block title %}Contact{% endblock %}
+
+{% block body %}
+    <div class="container" align = "center" style = "margin-top: 50px; margin-bottom: 50px;">
+        <h2>Contact</h2>
+
+        {% with alerts = get_flashed_messages() %}
+            {% if alerts %}
+                {% for alert in alerts %}
+                    {% if "respond" in alert %}
+                        <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+                            <div class="alert alert-success">
+                              {{ alert }}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+                            <div class="alert alert-danger">
+                              {{ alert }}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+            <form align = "left"class="form-signin" method="POST" action="/contact">
+                <label for="q" align = "left">Subject:</label>
+                <input type="text" class="form-control" id="q" name="subject"><br>
+
+                <label for="t" align = "left">Your email:</label>
+                <input type="email" class="form-control" id="t" name="email"><br>
+
+                <label for="comment" align = "left">Message:</label>
+                <textarea class="form-control" rows="5" id="comment" name="message"></textarea><br>
+
+                <button align = "left" type="submit" class="btn btn-style">Send</button>
+              </form>
+        </div>
+    </div>
+{% endblock %}
+
